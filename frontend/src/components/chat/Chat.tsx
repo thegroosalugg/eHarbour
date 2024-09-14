@@ -2,10 +2,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useContext, useState } from 'react';
 import { Context } from '@/store/Context';
 import { mediaQuery } from '@/util/mediaQuery';
-import { destructureChat } from '@/util/destructureConversation'; // *REMINDER*
+import { destructureChat } from '@/util/destructureChat';
 import Messages from './Messages';
-import Chat from '@/models/Conversation'; // *REMINDER*
-import css from './Conversation.module.css'; // *REMINDER*
+import Chat from '@/models/Chat';
+import css from './Chat.module.css';
 
 export default function ChatItem({
   index,

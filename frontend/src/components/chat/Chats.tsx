@@ -2,12 +2,12 @@ import { Context } from '@/store/Context';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { destructureChat } from '@/util/destructureConversation';  // *REMINDER*
-import Chat from '@/models/Conversation'; // *REMINDER*
-import ChatItem from './Conversation';  // *REMINDER*
+import { destructureChat } from '@/util/destructureChat';
+import Chat from '@/models/Chat';
+import ChatItem from './Chat';
 import Fallback from './Fallback';
 import ErrorPage from '../error/Error';
-import css from './Conversations.module.css'; // *REMINDER*
+import css from './Chats.module.css';
 
 export default function Chats({ chats }: { chats: Chat[] }) {
   const [isActive, setIsActive] = useState<Chat[] | null>(null);

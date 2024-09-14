@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import Chat from '@/models/Conversation'; // *REMINDER*
+import Chat from '@/models/Chat';
 import LoadingIndicator from '../loading/LoadingIndicator';
 import Message from '@/models/Message';
 import MessageItem from './Message';

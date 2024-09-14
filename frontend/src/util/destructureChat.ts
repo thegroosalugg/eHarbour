@@ -1,4 +1,4 @@
-import Chat from '@/models/Conversation'; // *REMINDER*
+import Chat from '@/models/Chat';
 
 export const destructureChat = (chat: Chat) => {
   const { _id, sessionId, members }       = chat;

@@ -1,5 +1,5 @@
 import { useFetch } from '@/hooks/useFetch';
-import Chats from '@/components/conversations/Conversations'; // *REMINDER*
+import Chats from '@/components/chat/Chats';
 import ErrorPage from '@/components/error/Error';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 
