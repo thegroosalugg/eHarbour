@@ -88,12 +88,12 @@ const fileFilter = (req, file, cb) => {
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 
-const  marketRoutes = require('../backend/routes/market');
-const   adminRoutes = require('../backend/routes/admin');
-const    authRoutes = require('../backend/routes/auth');
-const messageRoutes = require('../backend/routes/message');
-const    chatRoutes = require('../backend/routes/conversation'); // *REMINDER*
-const          user = require('../backend/models/user');
+const  marketRoutes = require('./routes/market');
+const   adminRoutes = require('./routes/admin');
+const    authRoutes = require('./routes/auth');
+const messageRoutes = require('./routes/message');
+const    chatRoutes = require('./routes/chat');
+const          user = require('./models/user');
 
 app.use(
   cors({

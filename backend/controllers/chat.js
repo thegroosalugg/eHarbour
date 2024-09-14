@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Chat = require('../models/conversation'); // *REMINDER*
+const Chat = require('../models/chat');
 const { userDetails } = require('../util/userDetails');
 
 const toObjectId = (id) => new mongoose.Types.ObjectId(String(id));
