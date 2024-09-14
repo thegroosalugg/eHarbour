@@ -1,0 +1,21 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+
+  label {
+    align-self: start;
+    text-wrap: nowrap;
+  }
+
+  textarea, input, label {
+    width: 170px;
+  }
+
+  textarea {
+    resize: none;
+    height: 3.5rem;
+  }
+}
