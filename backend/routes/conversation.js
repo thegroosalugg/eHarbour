@@ -1,12 +1,12 @@
 const express = require('express');
 
-const conversationController = require('../controllers/conversation');
+const chatController = require('../controllers/conversation'); // *REMINDER*
 
 const router = express.Router();
 
-router.post('/conversation', conversationController.postConversation);
-router.get('/conversations/', conversationController.getConversations);
-router.get('/conversation/:sellerId/:productId', conversationController.findConversation)
+router.post('/chat', chatController.postChat);
+router.get('/chats/', chatController.getChats);
+router.get('/chat/:sellerId/:productId', chatController.findChat)
 
 
 module.exports = router;

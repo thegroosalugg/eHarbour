@@ -1,7 +1,7 @@
-import Conversation from '@/models/Conversation';
+import Chat from '@/models/Conversation'; // *REMINDER*
 
-export const destructureConversation = (conversation: Conversation) => {
-  const { _id, sessionId, members }       = conversation;
+export const destructureChat = (chat: Chat) => {
+  const { _id, sessionId, members }       = chat;
   const { username,   _id: userId }       = members[0];
   const { username: sellerName, product } = members[1];
   const recipient = sessionId === userId ? sellerName : username;

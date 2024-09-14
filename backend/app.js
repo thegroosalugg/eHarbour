@@ -88,13 +88,12 @@ const fileFilter = (req, file, cb) => {
 app.set('views', 'views');
 app.set('view engine', 'ejs');
 
-const       marketRoutes = require('../backend/routes/market');
-const        adminRoutes = require('../backend/routes/admin');
-const         authRoutes = require('../backend/routes/auth');
-const      messageRoutes = require('../backend/routes/message');
-const conversationRoutes = require('../backend/routes/conversation');
-const user = require('../backend/models/user');
-// const { Socket } = require('dgram');
+const  marketRoutes = require('../backend/routes/market');
+const   adminRoutes = require('../backend/routes/admin');
+const    authRoutes = require('../backend/routes/auth');
+const messageRoutes = require('../backend/routes/message');
+const    chatRoutes = require('../backend/routes/conversation'); // *REMINDER*
+const          user = require('../backend/models/user');
 
 app.use(
   cors({
@@ -145,7 +144,7 @@ app.use(marketRoutes);
 app.use(adminRoutes);
 app.use(authRoutes);
 app.use(messageRoutes);
-app.use(conversationRoutes);
+app.use(chatRoutes);
 
 mongoose
   .connect(MONGODB_URI)
