@@ -1,16 +1,16 @@
 import { useFetch } from '@/hooks/useFetch';
-import Conversations from '@/components/conversations/Conversations';
+import Chats from '@/components/chat/Chats';
 import ErrorPage from '@/components/error/Error';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 
 export default function Inbox() {
-  const { data: conversations, isLoading, error } = useFetch('conversations');
+  const { data: chats, isLoading, error } = useFetch('chats');
 
   return isLoading ? (
     <LoadingIndicator />
   ) : error ? (
     <ErrorPage type='inbox' />
   ) : (
-    <Conversations conversations={conversations || []} />
+    <Chats chats={chats || []} />
   );
 }

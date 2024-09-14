@@ -1,4 +1,4 @@
-.conversation {
+.chat {
   display: flex;
   flex-direction: column;
   border: 1px solid #000;
@@ -61,7 +61,7 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 440px) and (min-resolution: 2dppx) and (orientation: portrait) {
-  .conversation {
+  .chat {
     .recipient {
       .product {
         h2 {
@@ -79,7 +79,7 @@
 }
 
 @media screen and (max-width: 768px) and (orientation: landscape) {
-  .conversation {
+  .chat {
     .recipient {
       position: relative;
     }

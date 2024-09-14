@@ -3,15 +3,15 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import Conversation from '@/models/Conversation';
+import Chat from '@/models/Chat';
 import LoadingIndicator from '../loading/LoadingIndicator';
 import Message from '@/models/Message';
 import MessageItem from './Message';
 import { returnNewMessages } from '@/util/returnNewMessages';
 import css from './Messages.module.css';
 
-export default function Messages({ conversation }: { conversation: Conversation }) {
-  const { _id, sessionId } = conversation;
+export default function Messages({ chat }: { chat: Chat }) {
+  const { _id, sessionId } = chat;
   const {              navTo                 } = useContext(Context);
   const {           sendRequest              } = useHTTP();
   const { data: messages, isLoading, setData } = useFetch<Message[]>('message/' + _id);
@@ -26,7 +26,7 @@ export default function Messages({ conversation }: { conversation: Conversation 
       const message = await sendRequest({
         params: 'message',
         method: 'POST',
-          data: { conversationId: _id, text: value },
+          data: { chatId: _id, text: value },
       });
       if (message) {
           setValue('');

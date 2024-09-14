@@ -2,23 +2,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useContext, useState } from 'react';
 import { Context } from '@/store/Context';
 import { mediaQuery } from '@/util/mediaQuery';
-import { destructureConversation } from '@/util/destructureConversation';
+import { destructureChat } from '@/util/destructureChat';
 import Messages from './Messages';
-import Conversation from '@/models/Conversation';
-import css from './Conversation.module.css';
+import Chat from '@/models/Chat';
+import css from './Chat.module.css';
 
-export default function ConversationItem({
+export default function ChatItem({
   index,
-  conversation,
+  chat,
   isActive,
   setActive,
 }: {
-         index: number;
-  conversation: Conversation;
-      isActive: Conversation[] | null;
-     setActive: (conversation: Conversation[] | null) => void;
+      index: number;
+       chat: Chat;
+   isActive: Chat[] | null;
+  setActive: (chat: Chat[] | null) => void;
 }) {
-  const { _id, recipient, product } = destructureConversation(conversation);
+  const { _id, recipient, product } = destructureChat(chat);
   const { isAnimating, navTo, setMetadata } = useContext(Context);
   const [    imageSrc,        setImageSrc ] = useState(`http://localhost:3000/${product.imageUrl}`);
   const isMobile = mediaQuery();
@@ -26,7 +26,7 @@ export default function ConversationItem({
   function expand() {
     if (!isActive) {
       navTo(`/inbox/${_id}`);
-      !isAnimating && setMetadata({ title: recipient, description: 'Conversation' });
+      !isAnimating && setMetadata({ title: recipient, description: 'Chat' });
     }
   }
 
@@ -45,7 +45,7 @@ export default function ConversationItem({
 
   return (
     <motion.li
-      className={css['conversation']}
+      className={css['chat']}
       layout
       style={{ flex: isActive ? 1 : 0, cursor: isActive ? '' : 'pointer' }}
       transition={layoutTransition}
@@ -99,7 +99,7 @@ export default function ConversationItem({
           )}
         </AnimatePresence>
       </motion.section>
-      {isActive && <Messages conversation={conversation} />}
+      {isActive && <Messages chat={chat} />}
     </motion.li>
   );
 }

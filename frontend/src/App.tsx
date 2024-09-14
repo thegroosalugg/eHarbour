@@ -18,13 +18,13 @@ library.add(fab, fas, far);
 
 export default function App() {
   const element = useRoutes([
-    { path: '/',                     element: <HomePage />     },
-    { path: 'market',                element: <MarketPage />   },
-    { path: 'market/:productId',     element: <MarketIdPage /> },
-    { path: 'account',               element: <UserPage />     },
-    { path: 'inbox',                 element: <Inbox />        },
-    { path: 'inbox/:conversationId', element: <Inbox />        },
-    { path: '*',                     element: <ErrorPage />    },
+    { path: '/',                 element: <HomePage />     },
+    { path: 'market',            element: <MarketPage />   },
+    { path: 'market/:productId', element: <MarketIdPage /> },
+    { path: 'account',           element: <UserPage />     },
+    { path: 'inbox',             element: <Inbox />        },
+    { path: 'inbox/:chatId',     element: <Inbox />        },
+    { path: '*',                 element: <ErrorPage />    },
   ]);
 
   if (!element) return null;

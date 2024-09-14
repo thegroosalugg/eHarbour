@@ -63,15 +63,15 @@ export default function ProductIdDetails({
     } else if (myAd) {
       toggleForm(expanded ? scrollUpRef : scrollDownRef);
     } else {
-      const conversation = await sendRequest({
-        params: `conversation/${userId._id}/${_id}`,
+      const chat = await sendRequest({
+        params: `chat/${userId._id}/${_id}`,
         method: 'GET',
       });
-      if (conversation) {
-        navTo('/inbox/' + conversation._id);
+      if (chat) {
+        navTo('/inbox/' + chat._id);
       } else {
-        const newConversation = await sendRequest({
-          params: 'conversation',
+        const newChat = await sendRequest({
+          params: 'chat',
           method: 'POST',
             data: {
              seller: {
@@ -81,8 +81,8 @@ export default function ProductIdDetails({
             },
           },
         });
-        if (newConversation) {
-          navTo('/inbox/' + newConversation._id);
+        if (newChat) {
+          navTo('/inbox/' + newChat._id);
         }
       }
     }

@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const Message = require('../models/message');
 
 exports.postMessage = (req, res, next) => {
-  const { text, conversationId } = req.body;
+  const { text, chatId } = req.body;
   const userId = req.session.user?._id;
 
   const errors = {};
-  if (!text.trim())    errors.text           = 'Message empty';
-  if (!conversationId) errors.conversationId = 'Cannot find conversation';
-  if (!userId)         errors.userId         = 'No user logged in';
+  if (!text.trim()) errors.text   = 'Message empty';
+  if (!chatId)      errors.chatId = 'Cannot find chat';
+  if (!userId)      errors.userId = 'No user logged in';
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({ ...errors });
   }
 
-  const newMessage = new Message({ text, userId, conversationId });
+  const newMessage = new Message({ text, userId, chatId });
 
   newMessage.save()
     .then(message => {
@@ -26,7 +26,7 @@ exports.postMessage = (req, res, next) => {
 };
 
 exports.getMessages = (req, res, next) => {
-  Message.find({conversationId: req.params.conversationId})
+  Message.find({ chatId: req.params.chatId })
   .then(messages => {
     res.status(200).json(messages);
   })
