@@ -18,9 +18,9 @@ export default function ChatItem({
    isActive: Chat[] | null;
   setActive: (chat: Chat[] | null) => void;
 }) {
-  const { _id, recipient, product } = destructureChat(chat);
+  const { _id, recipient, listing } = destructureChat(chat);
   const { isAnimating, navTo, setMetadata } = useContext(Context);
-  const [    imageSrc,        setImageSrc ] = useState(`http://localhost:3000/${product.imageUrl}`);
+  const [    imageSrc,        setImageSrc ] = useState(`http://localhost:3000/${listing.imageUrl}`);
   const isMobile = mediaQuery();
 
   function expand() {
@@ -68,19 +68,19 @@ export default function ChatItem({
       >
         <motion.img
           src={imageSrc}
-          alt={product.title}
+          alt={listing.title}
           initial={{ width, height }}
           animate={{ width, height, transition: { delay: 0.1, duration: 0.5 } }}
-          onClick={() => isActive && navTo('/market/' + product._id)}
+          onClick={() => isActive && navTo('/market/' + listing._id)}
           onError={() => setImageSrc('/notFound.png')}
           style={{ cursor: isActive ? 'pointer' : '' }}
           whileHover={{ scale: isActive ? 1.05 : 1 }}
         />
-        <div className={css['product']}>
+        <div className={css['listing']}>
           <h2>{recipient}</h2>
           <p style={{ fontWeight: isActive ? 400 : 300 }}>
-            <span>{product.title}</span>
-            <span>${product.price.toFixed(2)}</span>
+            <span>{listing.title}</span>
+            <span>${listing.price.toFixed(2)}</span>
           </p>
         </div>
         <AnimatePresence>
