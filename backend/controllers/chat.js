@@ -9,9 +9,9 @@ exports.postChat = (req, res, next) => {
   const seller = {
     ...req.body.seller,
     _id: toObjectId(req.body.seller._id), // Convert to ObjectId
-    product: {
-      ...req.body.seller.product,
-      _id: toObjectId(req.body.seller.product._id),
+    listing: {
+      ...req.body.seller.listing,
+      _id: toObjectId(req.body.seller.listing._id),
     },
   };
   const newChat = new Chat({
@@ -53,13 +53,13 @@ exports.getChats = (req, res, next) => {
 
 exports.findChat = (req, res, next) => {
   const userId = req.session.user._id;
-  const { sellerId, productId } = req.params;
+  const { sellerId, listingId } = req.params;
 
   Chat.findOne({
     members: {
       $all: [
         { $elemMatch: { _id: userId } },
-        { $elemMatch: { _id: toObjectId(sellerId), 'product._id': toObjectId(productId) } },
+        { $elemMatch: { _id: toObjectId(sellerId), 'listing._id': toObjectId(listingId) } },
       ],
     },
   })
