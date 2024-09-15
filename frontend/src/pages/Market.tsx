@@ -1,4 +1,4 @@
-import Listings from '@/components/products/Products';
+import Listings from '@/components/listings/Listings';
 import { useFetch } from '@/hooks/useFetch';
 
 export default function MarketPage() {

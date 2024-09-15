@@ -4,10 +4,10 @@ import { LayoutGroup,
 import { useFetch } from '@/hooks/useFetch';
 import {  useHTTP } from '@/hooks/useHTTP';
 import       User   from '@/models/User';
-import    Listing   from '@/models/Product';
+import    Listing   from '@/models/Listing';
 import   UserInfo   from './UserInfo';
 import   ItemForm   from '../form/ItemForm';
-import   Listings   from '../products/Products';
+import   Listings   from '../listings/Listings';
 import        css   from './Portal.module.css';
 
 export default function Portal({

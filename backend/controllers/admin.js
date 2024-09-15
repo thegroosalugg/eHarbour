@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const fileHelper = require('../util/file');
 
-const Listing = require('../models/product'); // ###
+const Listing = require('../models/listing');
 const { trimWhiteSpace } = require('../util/trimWhiteSpace');
 
 // '/add-listing'

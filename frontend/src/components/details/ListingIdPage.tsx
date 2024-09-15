@@ -6,9 +6,9 @@ import { Context } from '@/store/Context';
 import ItemForm from '../form/ItemForm';
 import Article from './Article';
 import DeletePrompt from './DeletePrompt';
-import Listing from '@/models/Product';
+import Listing from '@/models/Listing';
 import User from '@/models/User';
-import css from './ProductIdDetails.module.css';
+import css from './ListingIdPage.module.css';
 
 export const Box = forwardRef(
   ({ children }: { children: React.ReactNode }, ref: React.Ref<HTMLDivElement>) => (

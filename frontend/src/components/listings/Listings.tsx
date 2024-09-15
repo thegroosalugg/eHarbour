@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import Listing from '@/models/Product';
-import ListingItem from './Product';
+import Listing from '@/models/Listing';
+import ListingItem from './Listing';
 import LoadingIndicator from '../loading/LoadingIndicator';
 import Fallback from './Fallback';
 import ErrorPage from '../error/Error';
-import css from './Products.module.css';
+import css from './Listings.module.css';
 
 export default function Listings({
   listings,

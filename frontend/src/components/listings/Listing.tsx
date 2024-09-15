@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { Context } from '@/store/Context';
-import Listing from '@/models/Product';
-import css from './Product.module.css';
+import Listing from '@/models/Listing';
+import css from './Listing.module.css';
 
 export default function ListingItem({
   listing,

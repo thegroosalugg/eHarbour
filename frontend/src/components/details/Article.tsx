@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Box } from './ProductIdDetails';
-import Listing from '@/models/Product';
+import { Box } from './ListingIdPage';
+import Listing from '@/models/Listing';
 import css from './Article.module.css';
 
 const Article = forwardRef(({ listing }: { listing: Listing }, ref: React.Ref<HTMLDivElement>) => {

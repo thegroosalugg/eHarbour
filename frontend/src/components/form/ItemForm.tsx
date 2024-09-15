@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Input from './Input';
 import ImagePicker from './ImagePicker';
 import Button from '../button/Button';
-import Listing from '@/models/Product';
+import Listing from '@/models/Listing';
 import css from './ItemForm.module.css';
 
 export default function ItemForm({
