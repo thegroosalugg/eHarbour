@@ -12,7 +12,7 @@ export default function Navigation() {
 
   return (
     <nav className={css.nav}>
-      <h2>▢◻▫ e-Harbour <FontAwesomeIcon icon='anchor' size='xs' /> ▫◻</h2>
+      <h2>▢◻▫ eHarbour <FontAwesomeIcon icon='anchor' size='xs' /> ▫◻</h2>
       <motion.ul
         initial='hidden'
         animate='visible'
