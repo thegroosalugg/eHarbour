@@ -27,16 +27,15 @@ export default function ItemForm({
   };
 
   return (
-    <AnimatePresence mode='wait'>
+    <AnimatePresence>
       {expanded && (
         <motion.form
-              layout
             onSubmit={submitHandler}
            className={css['form']}
-             initial={{ opacity: 0, height: 0 }}
+             initial={{ opacity: 0, height: -10 }}
              animate={{ opacity: 1, height: '' }}
-                exit={{ opacity: 0, height: 0 }}
-          transition={{ ease: 'linear', duration: 0.5 }}
+                exit={{ opacity: 0, height: -10 }}
+          transition={{ ease: 'linear',  duration: 0.25 }}
         >
           <div className={css['inputs']}>
             <Input id='title'       error={error} defaultValue={title} />

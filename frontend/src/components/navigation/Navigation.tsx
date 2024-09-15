@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useFetch } from '@/hooks/useFetch';
 import { useContext } from 'react';
 import { Context } from '@/store/Context';
@@ -11,7 +12,7 @@ export default function Navigation() {
 
   return (
     <nav className={css.nav}>
-      <h2>▢▢▢ eHarbour ▫◻</h2>
+      <h2>▢◻▫ e-Harbour <FontAwesomeIcon icon='anchor' size='xs' /> ▫◻</h2>
       <motion.ul
         initial='hidden'
         animate='visible'

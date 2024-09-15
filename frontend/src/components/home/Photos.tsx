@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import stock1 from '@/assets/logo/photo1.jpg';
 import stock2 from '@/assets/logo/photo2.jpg';
 import stock3 from '@/assets/logo/photo3.jpg';
@@ -11,7 +12,7 @@ export default function Photos() {
         <img src={stock1} alt='stock' />
         <img src={stock2} alt='stock' />
       </div>
-      <h1>▢▢▢ eHarbour ▫◻</h1>
+      <h1>▢◻▫ eHarbour <FontAwesomeIcon icon='anchor' size='xs' /> ▫◻</h1>
       <div className={css.row}>
         <img src={stock3} alt='stock' />
         <img src={stock4} alt='stock' />

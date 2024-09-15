@@ -113,8 +113,8 @@ export default function ListingIdPage({
                 listing={listing}
             />
             <Box ref={scrollDownRef}>
-              <GitLink name='Iyayi Roland'   link='Iyayi2'        />
               <GitLink name='Victor Loginov' link='thegroosalugg' />
+              <GitLink name='Iyayi Roland'   link='Iyayi2'        />
             </Box>
           </aside>
         </LayoutGroup>
