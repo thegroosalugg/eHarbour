@@ -62,10 +62,10 @@ export default function ClipPathAnimator() {
             Take it or Leave it?
           </motion.span>
           <motion.span animate={{ opacity: index === isOpen ? 0 : 1 }}>
-            Come Get Me?
+            Make Me an Offer
           </motion.span>
           <motion.h2 animate={{ opacity: isOpen === 0 ? 1 : 0 }}>Temptation!</motion.h2>
-          <motion.h2 animate={{ opacity: isOpen === 1 ? 1 : 0 }}> Go Get It!</motion.h2>
+          <motion.h2 animate={{ opacity: isOpen === 1 ? 1 : 0 }}>That Cannot Be Ignored!</motion.h2>
           <motion.img src={woman2} alt='woman celebrating' animate={{ opacity: isOpen === 0 ? 1 : 0 }} />
           <motion.img src=  {man2} alt=  'man celebrating' animate={{ opacity: isOpen === 1 ? 1 : 0 }} />
         </motion.div>
