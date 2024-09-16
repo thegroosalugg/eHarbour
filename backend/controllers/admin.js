@@ -9,6 +9,10 @@ const { trimWhiteSpace } = require('../util/trimWhiteSpace');
 
 // '/add-listing'
 exports.postAddListing = (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    return res.status(403).json({ message: 'add-listing: No User logged in' });
+  }
+
   const { title, price, description } = trimWhiteSpace(req.body);
   const userId   = req.user._id;
   const imageUrl = req.file?.path;
