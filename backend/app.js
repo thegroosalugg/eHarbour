@@ -113,8 +113,11 @@ app.use(
     saveUninitialized: false,
                 store: store,
                cookie: {
-                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days. Prevents browser logouts when closed
-               },
+                   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days Prevents browser logouts when closed
+                 httpOnly: true,   // disable httpOnly, secure & sameSite for localHost testing
+                   secure: true,   // set to true for production
+                 sameSite: 'None', // required for cross-origin requests
+              },
   })
 );
 
