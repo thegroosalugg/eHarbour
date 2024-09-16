@@ -106,6 +106,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.set('trust proxy', 1); // trust first proxy
 app.use(
   session({
                secret: 'my secret',
