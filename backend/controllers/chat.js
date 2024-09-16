@@ -4,7 +4,12 @@ const { userDetails } = require('../util/userDetails');
 
 const toObjectId = (id) => new mongoose.Types.ObjectId(String(id));
 
+// chat
 exports.postChat = (req, res, next) => {
+  if (!req.session || !req.session.user) {
+    return res.status(403).json({ message: 'postChat: No User logged ln' });
+  }
+
   const user = userDetails(req.session.user);
   const seller = {
     ...req.body.seller,
@@ -28,9 +33,10 @@ exports.postChat = (req, res, next) => {
     });
 };
 
+// chats
 exports.getChats = (req, res, next) => {
   if (!req.session || !req.session.user) {
-    return res.status(403).json({ error: 'Unauthorized access' }); // Return 403 status with an error message
+    return res.status(403).json({ message: 'postChat: No User logged ln' });
   }
 
   const { _id } = req.session.user;
@@ -51,9 +57,14 @@ exports.getChats = (req, res, next) => {
     });
 };
 
+// /chat/:sellerId/:listingId
 exports.findChat = (req, res, next) => {
-  const userId = req.session.user._id;
+  const userId = req.session.user?._id;
   const { sellerId, listingId } = req.params;
+
+  if (!userId) {
+    return res.status(403).json({ message: 'chat/sellerID/listingId: No User logged in' });
+  }
 
   Chat.findOne({
     members: {

@@ -52,6 +52,10 @@ exports.getListingById = (req, res, next) => {
 
 // '/my-listings'
 exports.getListings = (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    return res.status(403).json({ message: 'my-listings: No User logged in' });
+  }
+
   Listing.find({ userId: req.user._id })
     .then((listing) => {
       res.status(200).json(listing);
