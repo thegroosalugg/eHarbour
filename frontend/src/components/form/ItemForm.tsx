@@ -32,10 +32,10 @@ export default function ItemForm({
         <motion.form
             onSubmit={submitHandler}
            className={css['form']}
-             initial={{ opacity: 0, height: -10 }}
-             animate={{ opacity: 1, height: '' }}
-                exit={{ opacity: 0, height: -10 }}
-          transition={{ ease: 'linear',  duration: 0.25 }}
+             initial={{ opacity: 0, height:     0  }}
+             animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height:     0  }}
+          transition={{ ease: 'linear', opacity: { duration: 0.5 } }}
         >
           <div className={css['inputs']}>
             <Input id='title'       error={error} defaultValue={title} />
