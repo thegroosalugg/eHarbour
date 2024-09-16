@@ -8,3 +8,5 @@ I wanted to create an independent version as part of my portfolio.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## trivial change
