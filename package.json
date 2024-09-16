@@ -1,0 +1,12 @@
+{
+  "name": "root-project",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && nodemon app.js"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
