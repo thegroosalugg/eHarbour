@@ -20,7 +20,7 @@ export default function ChatItem({
 }) {
   const { _id, recipient, listing } = destructureChat(chat);
   const { isAnimating, navTo, setMetadata } = useContext(Context);
-  const [    imageSrc,        setImageSrc ] = useState(`http://localhost:3000/${listing.imageUrl}`);
+  const [    imageSrc,        setImageSrc ] = useState(import.meta.env.VITE_SERVER_URL + listing.imageUrl);
   const isMobile = mediaQuery();
 
   function expand() {
