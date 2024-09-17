@@ -106,13 +106,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.set('trust proxy', 1); // trust first proxy
+app.set('trust proxy', 1); // trust first proxy. Required to work on Render.com
 app.use(
   session({
                secret: 'my secret',
                resave: false,
     saveUninitialized: false,
                 store: store,
+                proxy: true,     // set for Render
+                 name: 'cookie', // set for Render
                cookie: {
                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days Prevents browser logouts when closed
                  httpOnly: true,   // disable httpOnly, secure & sameSite for localHost testing
