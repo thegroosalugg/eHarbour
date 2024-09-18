@@ -1,7 +1,4 @@
-const path = require('path');
-
 const      express = require('express');
-const   bodyParser = require('body-parser');
 const     mongoose = require('mongoose');
 const      session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -10,7 +7,12 @@ const       multer = require('multer');
 const         cors = require('cors');
 require('dotenv').config();
 
-const User = require('./models/user');
+const          User = require('./models/user');
+const  marketRoutes = require('./routes/market');
+const   adminRoutes = require('./routes/admin');
+const    authRoutes = require('./routes/auth');
+const messageRoutes = require('./routes/message');
+const    chatRoutes = require('./routes/chat');
 
 const MONGODB_URI = process.env.MONGO_KEY;
 const    app = express();
@@ -33,25 +35,20 @@ const getUser = (userId) => {
 };
 
 io.on('connection', (socket) => {
-  // when connect
   console.log('a user connected.');
 
-  // take userId and socketId from user
   socket.on('addUser', (userId) => {
     addUser(userId, socket.id);
     io.emit('getUsers', users);
   });
 
-  // send and get message
   socket.on('sendMessage', ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    io.to(user.socketId).emit('getMessage', {
-      senderId,
-      text,
-    });
+    if (user) {
+      io.to(user.socketId).emit('getMessage', { senderId, text });
+    }
   });
 
-  // when disconnect
   socket.on('disconnect', () => {
     console.log('a user disconnected!');
     removeUser(socket.id);
@@ -85,27 +82,17 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.set('views', 'views');
-app.set('view engine', 'ejs');
-
-const  marketRoutes = require('./routes/market');
-const   adminRoutes = require('./routes/admin');
-const    authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/message');
-const    chatRoutes = require('./routes/chat');
-const          user = require('./models/user');
-
 app.use(
   cors({
          origin: process.env.CLIENT_URL, // configured to accept credentials from front end for session cookies to work
     credentials: true,
   })
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
-app.use(express.static(path.join(__dirname, '/public')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(express.static('public'));
+app.use('/images', express.static('images'));
 app.set('trust proxy', 1); // trust first proxy. Required to work on Render.com
 app.use(
   session({
@@ -113,8 +100,6 @@ app.use(
                resave: false,
     saveUninitialized: false,
                 store: store,
-                proxy: true,     // set for Render
-                 name: 'cookie', // set for Render
                cookie: {
                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days Prevents browser logouts when closed
                  httpOnly: true,   // disable httpOnly, secure & sameSite for localHost testing
@@ -123,11 +108,6 @@ app.use(
               },
   })
 );
-
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  next();
-});
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -154,9 +134,10 @@ app.use(chatRoutes);
 
 mongoose
   .connect(MONGODB_URI)
-  .then((result) => {
-    server.listen(3000);
-    console.log('connected!');
+  .then(() => {
+    server.listen(3000, () => {
+      console.log('Server is running on port 3000');
+    });
   })
   .catch((err) => {
     console.log(err);
