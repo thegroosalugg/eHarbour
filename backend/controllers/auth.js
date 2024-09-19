@@ -1,17 +1,9 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const   mongoose = require('mongoose');
+const     bcrypt = require('bcrypt');
+const        jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
 const User = require('../models/user');
-const { userDetails } = require('../util/userDetails');
-
-exports.getLogin = (req, res, next) => {
-  if (req.session.user) {
-    res.status(200).json(userDetails(req.session.user));
-  } else {
-    res.status(401).json({ message: 'No user logged in' });
-  }
-};
 
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
@@ -22,21 +14,22 @@ exports.postLogin = (req, res, next) => {
         return res.status(404).json({ email: 'invalid' });
       }
 
-      bcrypt.compare(password, user.password, (err, result) => {
+      const { _id, email, username, password: hashedPassword } = user;
+      bcrypt.compare(password, hashedPassword, (err, result) => {
         if (err) {
-          return res.status(500).json({ ...err, message: 'bscrypt error' });
+          return res.status(500).json({ ...err, message: 'bcrypt error' });
         }
         if (!result) {
           return res.status(401).json({ password: 'invalid' });
         }
 
-        req.session.user = user;
-        req.session.save((err) => {
-          if (err) {
-            return res.status(500).json({ ...err, message: 'session save failed' });
-          }
-          res.status(200).json(userDetails(user));
-        });
+        const token = jwt.sign(
+          { _id, email },
+          process.env.JWT_SECRET,
+          { expiresIn: '30d' }
+        );
+
+        res.status(200).json({ _id, email, username, token });
       });
     })
     .catch((err) => {
@@ -54,8 +47,14 @@ exports.postSignup = (req, res, next) => {
       return user.save();
     })
     .then((user) => {
-      req.session.user = user; // Set new user as session user on creation
-      res.status(200).json(userDetails(user));
+      const { _id, username, email } = user;
+      const token = jwt.sign(
+        { _id, email },
+        process.env.JWT_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      res.status(200).json({ _id, email, username, token });
     })
     .catch((err) => {
       let errors = err;
@@ -65,13 +64,4 @@ exports.postSignup = (req, res, next) => {
       }
       res.status(400).json(errors);
     });
-};
-
-exports.postLogout = (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Logout failed' });
-    }
-    res.status(200).json(null); // clear state in frontend
-  });
 };
