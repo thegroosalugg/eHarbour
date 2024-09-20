@@ -14,7 +14,7 @@ export default function Messages({ chat }: { chat: Chat }) {
   const { _id, sessionId } = chat;
   const {              navTo                 } = useContext(Context);
   const {           sendRequest              } = useHTTP();
-  const { data: messages, isLoading, setData } = useFetch<Message[]>('message/' + _id);
+  const { data: messages, isLoading, setData } = useFetch<Message[]>('messages/' + _id);
   const [value,     setValue] = useState('');
   const [didSend, setDidSend] = useState(false);
   const  msgRef               = useRef<HTMLLIElement>(null);
