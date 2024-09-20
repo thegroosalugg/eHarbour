@@ -20,7 +20,7 @@ export default function Portal({
   isLoading: boolean;
 }) {
   const { sendRequest, isLoading: sendingData, error, setError } = useHTTP();
-  const { data, setData, isLoading: isFetching } = useFetch<Listing[]>('my-listings');
+  const { data, setData, isLoading: isFetching } = useFetch<Listing[]>('user-listings');
   const [expanded, setExpanded] = useState(false);
 
   const listings = data || [];

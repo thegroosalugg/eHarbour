@@ -1,7 +1,9 @@
 const Listing = require('../models/listing');
 
+// '/listings
 exports.getListings = (req, res, next) => {
   Listing.find()
+    .populate('userId', 'username')
     .then((listings) => {
       res.status(200).json(listings);
     })
@@ -10,14 +12,22 @@ exports.getListings = (req, res, next) => {
     });
 };
 
-exports.getPopulatedListings = (req, res, next) => {
-  Listing.find()
+// '/listing/:listingId'
+exports.getListingById = (req, res, next) => {
+  const id = req.params.listingId;
+
+  Listing.findById(id)
     .populate('userId', 'username')
-    .then((listings) => {
-      res.status(200).json(listings);
+    .then((listing) => {
+      if (!listing) {
+        return res.status(404).json({ message: 'Listing not found' });
+      }
+
+      res.status(200).json(listing);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      console.error(err);
+      res.status(500).json({ ...err, message: 'getListingById Error' });
     });
 };
 

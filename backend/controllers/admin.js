@@ -1,19 +1,12 @@
-const mongoose = require('mongoose');
-
-const fs = require('fs');
-
-const fileHelper = require('../util/file');
-
-const Listing = require('../models/listing');
-const { trimWhiteSpace } = require('../util/trimWhiteSpace');
+const     mongoose = require('mongoose');
+const           fs = require('fs');
+const   fileHelper = require('../util/file');
+const      Listing = require('../models/listing');
+const { trimBody } = require('../util/trimBody');
 
 // '/add-listing'
 exports.postAddListing = (req, res, next) => {
-  if (!req.user || !req.user._id) {
-    return res.status(403).json({ message: 'add-listing: No User logged in' });
-  }
-
-  const { title, price, description } = trimWhiteSpace(req.body);
+  const { title, price, description } = trimBody(req.body);
   const userId   = req.user._id;
   const imageUrl = req.file?.path;
 
@@ -35,44 +28,21 @@ exports.postAddListing = (req, res, next) => {
     });
 };
 
-// '/listing/:listingId'
-exports.getListingById = (req, res, next) => {
-  const id = req.params.listingId;
-
-  Listing.findById(id)
-    .populate('userId', 'username')
-    .then((listing) => {
-      if (!listing) {
-        return res.status(404).json({ message: 'Listing not found' });
-      }
-
-      res.status(200).json(listing);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ ...err, message: 'getListingById Error' });
-    });
-};
-
-// '/my-listings'
+// '/user-listings'
 exports.getListings = (req, res, next) => {
-  if (!req.user || !req.user._id) {
-    return res.status(403).json({ message: 'my-listings: No User logged in' });
-  }
-
   Listing.find({ userId: req.user._id })
     .then((listing) => {
       res.status(200).json(listing);
     })
     .catch((err) => {
-      res.status(500).json({ ...err, message: 'my-listings fetch error' });
+      res.status(500).json({ ...err, message: 'user-listings fetch error' });
     });
 };
 
 // '/edit-listing/:listingId'
 exports.putEditListing = (req, res, next) => {
   const id = req.params.listingId;
-  const { title, price, description } = trimWhiteSpace(req.body);
+  const { title, price, description } = trimBody(req.body);
   const imageUrl = req.file?.path;
 
   Listing.findById(id).then(async (listing) => {
