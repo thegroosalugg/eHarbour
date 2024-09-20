@@ -1,16 +1,11 @@
-const mongoose = require('mongoose');
-const Chat = require('../models/chat');
-const { userDetails } = require('../util/userDetails');
-
+const   mongoose = require('mongoose');
+const       Chat = require('../models/chat');
 const toObjectId = (id) => new mongoose.Types.ObjectId(String(id));
 
 // chat
 exports.postChat = (req, res, next) => {
-  if (!req.session || !req.session.user) {
-    return res.status(403).json({ message: 'postChat: No User logged ln' });
-  }
-
-  const user = userDetails(req.session.user);
+  const          { _id, username, email } = req.user;
+  const   user = { _id, username, email };
   const seller = {
     ...req.body.seller,
     _id: toObjectId(req.body.seller._id), // Convert to ObjectId
@@ -35,11 +30,7 @@ exports.postChat = (req, res, next) => {
 
 // chats
 exports.getChats = (req, res, next) => {
-  if (!req.session || !req.session.user) {
-    return res.status(403).json({ message: 'postChat: No User logged ln' });
-  }
-
-  const { _id } = req.session.user;
+  const { _id } = req.user;
 
   Chat.find({
     members: { $elemMatch: { _id } },
@@ -59,12 +50,8 @@ exports.getChats = (req, res, next) => {
 
 // /chat/:sellerId/:listingId
 exports.findChat = (req, res, next) => {
-  const userId = req.session.user?._id;
+  const userId = req.user._id;
   const { sellerId, listingId } = req.params;
-
-  if (!userId) {
-    return res.status(403).json({ message: 'chat/sellerID/listingId: No User logged in' });
-  }
 
   Chat.findOne({
     members: {
