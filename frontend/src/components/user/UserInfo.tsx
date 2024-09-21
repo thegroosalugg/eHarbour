@@ -11,20 +11,16 @@ export default function UserInfo({
   onLogout,
   isLoading,
   adsOnline,
-  expanded,
-  setExpanded,
   setError,
 }: {
          user: User;
      onLogout: () => void;
     isLoading: boolean;
     adsOnline: number;
-     expanded: boolean;
-  setExpanded: Dispatch<SetStateAction<boolean>>;
      setError: Dispatch<SetStateAction<null>>;
 }) {
   const { username, email } = user;
-  const { navTo, isAnimating, setIsAnimating } = useContext(Context);
+  const { navTo, isAnimating, setIsAnimating, expanded, setExpanded } = useContext(Context);
 
   function clickHandler() {
     if (!isAnimating) {

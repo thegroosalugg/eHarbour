@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { Context } from '@/store/Context';
 import { AnimatePresence, motion } from 'framer-motion';
 import Input from './Input';
 import ImagePicker from './ImagePicker';
@@ -6,19 +8,18 @@ import Listing from '@/models/Listing';
 import css from './ItemForm.module.css';
 
 export default function ItemForm({
-  expanded,
   dataFn,
   isLoading,
   error,
   listing,
 }: {
-   expanded: boolean;
      dataFn: (data: object) => void;
   isLoading: boolean;
       error: object | null;
    listing?: Listing;
 }) {
   const { title = '', price = '', description = '' } = listing || {};
+  const { expanded } = useContext(Context);
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
