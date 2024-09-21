@@ -1,13 +1,14 @@
+import Listing from "./Listing";
 export default class User {
-        _id: string;
-      email: string;
-  password?: string;
-   username: string;
+         _id: string;
+       email: string;
+    username: string;
+    listings: Listing[];
 
   constructor() {
     this._id      = '';
     this.email    = '';
-    this.password = '';
     this.username = '';
+    this.listings = [];
   }
 }

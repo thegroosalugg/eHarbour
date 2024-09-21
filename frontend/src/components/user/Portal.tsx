@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import { LayoutGroup,
-           motion } from 'framer-motion';
-import { useFetch } from '@/hooks/useFetch';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { LayoutGroup, motion } from 'framer-motion';
 import {  useHTTP } from '@/hooks/useHTTP';
 import       User   from '@/models/User';
-import    Listing   from '@/models/Listing';
 import   UserInfo   from './UserInfo';
 import   ItemForm   from '../form/ItemForm';
 import   Listings   from '../listings/Listings';
@@ -14,31 +11,33 @@ export default function Portal({
   user,
   onLogout,
   isLoading,
+  setData,
 }: {
        user: User;
    onLogout: () => void;
   isLoading: boolean;
+    setData: Dispatch<SetStateAction<User>>;
 }) {
   const { sendRequest, isLoading: sendingData, error, setError } = useHTTP();
-  const { data, setData, isLoading: isFetching } = useFetch<Listing[]>('user-listings');
   const [expanded, setExpanded] = useState(false);
 
-  const listings = data || [];
+  const { listings } = user;
   const hasItems = listings.length > 0;
 
   const submitHandler = async (data: object) => {
-    const newItem = await sendRequest({ url: 'add-listing', method: 'POST', data });
+    const token = localStorage.getItem('token');
+    const newItem = await sendRequest({ url: 'add-listing', method: 'POST', data, token });
     if (newItem) {
       setExpanded(false);
       setTimeout(() => {
-        setData((items) => (items ? [...items, newItem] : [newItem]));
+        setData((user) => ({ ...user, listings: [newItem, ...listings] }));
       }, 500);
     }
   };
 
   const userInfoProps = { expanded, setExpanded, isLoading, user, onLogout, setError, adsOnline: listings.length };
-  const itemFormProps = { expanded,       error, isLoading: sendingData,                 dataFn:   submitHandler };
-  const listingsProps = { hasItems,    listings, isLoading:  isFetching                                          };
+  const itemFormProps = { expanded, error, isLoading: sendingData, dataFn: submitHandler };
+  const listingsProps = { hasItems, listings };
 
   return (
     <LayoutGroup>

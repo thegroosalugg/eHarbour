@@ -18,7 +18,7 @@ export default function Listings({
   isLoggedIn?: boolean | null;
     hasItems?: boolean | null;
   onUserPage?: boolean | null;
-    isLoading: boolean;
+   isLoading?: boolean;
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const timerRef = useRef<number | null>(null);

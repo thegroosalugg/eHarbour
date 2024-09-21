@@ -33,8 +33,8 @@ exports.postAddListing = (req, res, next) => {
 // '/user-listings'
 exports.getUserListings = (req, res, next) => {
   Listing.find({ userId: req.user._id })
-    .then((listing) => {
-      res.status(200).json({ listing, ...req.user });
+    .then((listings) => {
+      res.status(200).json({ listings, ...req.user });
     })
     .catch((err) => {
       res.status(500).json({ ...err, message: 'user-listings fetch error' });

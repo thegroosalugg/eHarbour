@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from 'react';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
+import Portal from '@/components/user/Portal';
 import SignInForm from '../components/form/SignInForm';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 import PageWrapper from '@/components/pages/PageWrapper';
@@ -24,19 +26,7 @@ export default function UserPage() {
       {isFetching ? (
         <LoadingIndicator key='lds' />
       ) : user ? (
-        // <Portal key='portal' user={user} isLoading={isLoading} onLogout={handleLogout} />
-        <div>
-          <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {user._id}
-          </p>
-          <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {user.email}
-          </p>
-          <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {user.username}
-          </p>
-          <button onClick={handleLogout}>LOGOUT</button>
-        </div>
+        <Portal key='portal' user={user} isLoading={isLoading} setData={setData as Dispatch<SetStateAction<User>>} onLogout={handleLogout} />
       ) : (
         <SignInForm key='form' isLoading={isLoading} error={error} setError={setError} onLogin={handleLogin} />
       )}

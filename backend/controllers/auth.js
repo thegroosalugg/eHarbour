@@ -29,7 +29,7 @@ exports.postLogin = (req, res, next) => {
           { expiresIn: '30d' }
         );
 
-        res.status(200).json({ _id, email, username, token });
+        res.status(200).json({ _id, email, username, listings: [], token });
       });
     })
     .catch((err) => {
@@ -53,7 +53,7 @@ exports.postSignup = (req, res, next) => {
         process.env.JWT_SECRET,
         { expiresIn: '30d' }
       );
-      res.status(200).json({ _id, email, username, token });
+      res.status(200).json({ _id, email, username, listings: [], token });
     })
     .catch((err) => {
       let errors = err;
