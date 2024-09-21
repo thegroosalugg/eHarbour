@@ -96,18 +96,16 @@ const authenticateJWT = (req, res, next) => {
         return res.sendStatus(403);
       }
       req.user = user;
-      next();
     });
-  } else {
-    res.sendStatus(401);
   }
+  next();
 };
 
 app.use(authRoutes);
-app.use('/admin',   authenticateJWT,   adminRoutes);
-app.use('/market',  authenticateJWT,  marketRoutes);
-app.use('/chat',    authenticateJWT,    chatRoutes);
-app.use('/message', authenticateJWT, messageRoutes);
+app.use(authenticateJWT,   adminRoutes);
+app.use(authenticateJWT,  marketRoutes);
+app.use(authenticateJWT,    chatRoutes);
+app.use(authenticateJWT, messageRoutes);
 
 mongoose
   .connect(process.env.MONGO_KEY)

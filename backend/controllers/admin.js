@@ -29,7 +29,7 @@ exports.postAddListing = (req, res, next) => {
 };
 
 // '/user-listings'
-exports.getListings = (req, res, next) => {
+exports.getUserListings = (req, res, next) => {
   Listing.find({ userId: req.user._id })
     .then((listing) => {
       res.status(200).json(listing);

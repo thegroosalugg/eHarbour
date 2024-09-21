@@ -4,7 +4,7 @@ const          router = express.Router();
 const      isLoggedIn = require('../middleware/isLoggedin')
 
 router.post('/add-listing',                 isLoggedIn, adminController.postAddListing);
-router.get('/user-listings',                isLoggedIn, adminController.getListings);
+router.get('/user-listings',                isLoggedIn, adminController.getUserListings);
 router.put('/edit-listing/:listingId',      isLoggedIn, adminController.putEditListing);
 router.delete('/delete-listing/:listingId', isLoggedIn, adminController.deleteListing);
 
