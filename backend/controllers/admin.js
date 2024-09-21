@@ -4,6 +4,8 @@ const   fileHelper = require('../util/file');
 const      Listing = require('../models/listing');
 const { trimBody } = require('../util/trimBody');
 
+// all controllers will return 403 if req.user is undefined in isLoggedIn middleWare supplied in /routes
+
 // '/add-listing'
 exports.postAddListing = (req, res, next) => {
   const { title, price, description } = trimBody(req.body);
@@ -32,7 +34,7 @@ exports.postAddListing = (req, res, next) => {
 exports.getUserListings = (req, res, next) => {
   Listing.find({ userId: req.user._id })
     .then((listing) => {
-      res.status(200).json(listing);
+      res.status(200).json({ listing, ...req.user });
     })
     .catch((err) => {
       res.status(500).json({ ...err, message: 'user-listings fetch error' });

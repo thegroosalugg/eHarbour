@@ -12,7 +12,8 @@ export const useFetch = <T = null>(
   const {  listingId  } = useParams();
 
   const getData = useCallback(async () => {
-    const response = await sendRequest({ url, method: 'GET' });
+    const token = localStorage.getItem('token');
+    const response = await sendRequest({ url, method: 'GET', token });
     setExternalData && setExternalData(response); // allows to update another state with this data
     if (listingId && response?.title && response?.description) {
         const { title, description } = response;

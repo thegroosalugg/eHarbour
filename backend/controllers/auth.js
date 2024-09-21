@@ -24,7 +24,7 @@ exports.postLogin = (req, res, next) => {
         }
 
         const token = jwt.sign(
-          { _id, email },
+          { _id, email, username },
           process.env.JWT_SECRET,
           { expiresIn: '30d' }
         );
@@ -49,11 +49,10 @@ exports.postSignup = (req, res, next) => {
     .then((user) => {
       const { _id, username, email } = user;
       const token = jwt.sign(
-        { _id, email },
+        { _id, email, username },
         process.env.JWT_SECRET,
         { expiresIn: '30d' }
       );
-
       res.status(200).json({ _id, email, username, token });
     })
     .catch((err) => {

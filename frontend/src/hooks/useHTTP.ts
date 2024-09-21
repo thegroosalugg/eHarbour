@@ -11,6 +11,9 @@ export function useHTTP<T = null>(initialData = null) {
     setError(null);
     try {
       const response = await fetchData({ url, method, data, token });
+      if (response?.token) {
+        localStorage.setItem('token', response.token);
+      }
       setData(response);
       setIsLoading(false);
       return response;

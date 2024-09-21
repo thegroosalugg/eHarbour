@@ -2,7 +2,7 @@ export interface Fetch {
      url: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
    data?: object;
-  token?: string;
+  token?: string | null;
 }
 
 export const fetchData = async ({ url, method, data, token }: Fetch) => {
