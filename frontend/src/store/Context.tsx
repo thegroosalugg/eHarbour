@@ -1,4 +1,3 @@
-import User from '@/models/User';
 import { createContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,8 +7,8 @@ type Metadata = {
 }
 
 type ContextType = {
-            user: User | null;
-         setUser: Dispatch<SetStateAction<User | null>>;
+           token: string | null;
+        setToken: Dispatch<SetStateAction<string | null>>;
         metadata: Metadata | null;
      setMetadata: Dispatch<SetStateAction<Metadata | null>>;
      isAnimating: boolean,
@@ -18,8 +17,8 @@ type ContextType = {
 };
 
 export const Context = createContext<ContextType>({
-            user: null,
-         setUser: () => {},
+           token: null,
+        setToken: () => {},
         metadata: null,
      setMetadata: () => {},
      isAnimating: false,
@@ -28,7 +27,7 @@ export const Context = createContext<ContextType>({
 });
 
 export default function ContextProvider({ children }: { children: ReactNode }) {
-  const [       user,        setUser] = useState<User     | null>(null);
+  const [      token,       setToken] = useState<string   | null>(localStorage.getItem('token'));
   const [   metadata,    setMetadata] = useState<Metadata | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const                     navigate  = useNavigate();
@@ -47,8 +46,8 @@ export default function ContextProvider({ children }: { children: ReactNode }) {
   };
 
   const ctxValue = {
-    user,
-    setUser,
+    token,
+    setToken,
     metadata,
     setMetadata,
     isAnimating,

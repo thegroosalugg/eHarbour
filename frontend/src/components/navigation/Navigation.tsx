@@ -1,15 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useFetch } from '@/hooks/useFetch';
-import { useContext } from 'react';
-import { Context } from '@/store/Context';
 import NavButton from './NavButton';
 import css from './Navigation.module.css';
 
 export default function Navigation() {
-  const { user, setUser } = useContext(Context);
-  useFetch('login', setUser);
-
   return (
     <nav className={css.nav}>
       <h2>▢◻▫ eHarbour <FontAwesomeIcon icon='anchor' size='xs' /> ▫◻</h2>
@@ -22,7 +16,7 @@ export default function Navigation() {
         <NavButton path='/market'  label='Market' />
         <NavButton path='/account' label='Account' />
         <AnimatePresence>
-          {user && <NavButton path='/inbox' label='Inbox' key={user + ''} />}
+          {localStorage.token && <NavButton path='/inbox' label='Inbox' />}
         </AnimatePresence>
       </motion.ul>
     </nav>

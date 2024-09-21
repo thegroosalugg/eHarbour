@@ -1,47 +1,39 @@
-import { Context } from '@/store/Context';
-import { useContext } from 'react';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import Portal from '@/components/user/Portal';
 import SignInForm from '../components/form/SignInForm';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 import PageWrapper from '@/components/pages/PageWrapper';
 import User from '@/models/User';
-import Listing from '@/models/Listing';
 
 export default function UserPage() {
-  const { data, setData, isLoading, error, setError, sendRequest } = useHTTP();
+  const { data: user, setData, setToken, isLoading, error, setError, sendRequest } = useHTTP<User>();
   const { isLoading: isFetching } = useFetch('user-listings', setData);
-  const { setUser } = useContext(Context);
 
   const handleLogin = async (url: string, data: object) => {
-    const response = await sendRequest({ url, method: 'POST', data });
-    if (response) {
-      setUser(response);
-    }
+    await sendRequest({ url, method: 'POST', data });
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setUser(null);
     setData(null);
+    setToken(null);
   };
 
   return (
-    <PageWrapper recreate={data}>
+    <PageWrapper recreate={user + ''}>
       {isFetching ? (
         <LoadingIndicator key='lds' />
-      ) : data ? (
+      ) : user ? (
         // <Portal key='portal' user={user} isLoading={isLoading} onLogout={handleLogout} />
         <div>
           <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {data._id}
+            {user._id}
           </p>
           <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {data.email}
+            {user.email}
           </p>
           <p style={{ width: 300, height: 50, border: '1px solid #000' }}>
-            {data.username}
+            {user.username}
           </p>
           <button onClick={handleLogout}>LOGOUT</button>
         </div>
