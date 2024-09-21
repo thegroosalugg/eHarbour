@@ -10,7 +10,7 @@ export default function SignInForm({
   error,
   setError,
 }: {
-    onLogin: (params: string, data: object) => void;
+    onLogin: (url: string, data: object) => void;
   isLoading: boolean;
       error: object | null;
    setError: Dispatch<SetStateAction<null>>;

@@ -64,14 +64,14 @@ export default function ListingIdPage({
       toggleForm(expanded ? scrollUpRef : scrollDownRef);
     } else {
       const chat = await sendRequest({
-        params: `chat/${userId._id}/${_id}`,
+           url: `chat/${userId._id}/${_id}`,
         method: 'GET',
       });
       if (chat) {
         navTo('/inbox/' + chat._id);
       } else {
         const newChat = await sendRequest({
-          params: 'chat',
+             url: 'chat',
           method: 'POST',
             data: {
              seller: {

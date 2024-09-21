@@ -24,7 +24,7 @@ export default function Messages({ chat }: { chat: Chat }) {
     // prettier-ignore
     if (value.trim()) {
       const message = await sendRequest({
-        params: 'message',
+           url: 'message',
         method: 'POST',
           data: { chatId: _id, text: value },
       });
@@ -40,7 +40,7 @@ export default function Messages({ chat }: { chat: Chat }) {
 
   useEffect(() => {
     const checkForMsgs = async () => {
-      const response = await sendRequest({ params: 'message/' + _id, method: 'GET' });
+      const response = await sendRequest({ url: 'message/' + _id, method: 'GET' });
       if (response) {
         const newMsgs = returnNewMessages(messages || [], response);
         if (newMsgs.length > 0) {

@@ -12,15 +12,15 @@ export default function UserPage() {
   const { isLoading: isFetching } = useFetch('login', setData);
   const { setUser } = useContext(Context);
 
-  const handleLogin = async (params: string, data: object) => {
-    const isLoggedIn = await sendRequest({ params, method: 'POST', data });
+  const handleLogin = async (url: string, data: object) => {
+    const isLoggedIn = await sendRequest({ url, method: 'POST', data });
     if (isLoggedIn) {
       setUser(isLoggedIn);
     }
   };
 
   const handleLogout = async () => {
-    const response = await sendRequest({ params: 'logout', method: 'POST' });
+    const response = await sendRequest({ url: 'logout', method: 'POST' });
     if (!response) {
       setUser(response); // backend sends null on success / json objects on fail
     }

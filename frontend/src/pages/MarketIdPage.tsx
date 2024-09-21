@@ -17,7 +17,7 @@ export default function MarketIdPage() {
 
   const updateItem = async (data: object) => {
     setIsAnimating(true)
-    const didUpdate = await sendRequest({ params: 'edit-listing/' + listingId, method: 'PUT', data });
+    const didUpdate = await sendRequest({ url: 'edit-listing/' + listingId, method: 'PUT', data });
     didUpdate && setExpanded(false);
     setTimeout(() => {
       setIsAnimating(false);
@@ -25,7 +25,7 @@ export default function MarketIdPage() {
   };
 
   const deleteItem = async () => {
-    const hasError = await sendRequest({ params: 'delete-listing/' + listingId, method: 'DELETE' });
+    const hasError = await sendRequest({ url: 'delete-listing/' + listingId, method: 'DELETE' });
     if (!hasError) {
       navTo('/account');
     }

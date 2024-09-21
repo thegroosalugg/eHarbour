@@ -6,11 +6,11 @@ export function useHTTP<T = null>(initialData = null) {
   const [isLoading, setIsLoading] = useState(false);
   const [    error,     setError] = useState<object | null>(null);
 
-  const sendRequest = useCallback(async ({ params, method, data }: Fetch) => {
+  const sendRequest = useCallback(async ({ url, method, data, token }: Fetch) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetchData({ params, method, data });
+      const response = await fetchData({ url, method, data, token });
       setData(response);
       setIsLoading(false);
       return response;
