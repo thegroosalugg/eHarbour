@@ -1,9 +1,10 @@
-const     mongoose = require('mongoose');
-const           fs = require('fs');
-const   fileHelper = require('../util/file');
-const         User = require('../models/user');
-const      Listing = require('../models/listing');
-const { trimBody } = require('../util/trimBody');
+const      mongoose     = require('mongoose');
+const            fs     = require('fs');
+const    fileHelper     = require('../util/file');
+const          User     = require('../models/user');
+const       Listing     = require('../models/listing');
+const {    trimBody   } = require('../util/trimBody');
+const { formatListing } = require('../util/formatListing')
 
 // all controllers will return 403 if req.user is undefined in isLoggedIn middleWare supplied in /routes
 
@@ -70,7 +71,7 @@ exports.putEditListing = (req, res, next) => {
         fs.unlinkSync(oldImageUrl);
       }
       const listing_1 = await Listing.findById(id).populate('userId', 'username');
-      res.status(200).json(listing_1);
+      res.status(200).json({ ...formatListing(listing_1), isLoggedIn: req.user?._id });
     } catch (err) {
       if (imageUrl) {
         fs.unlinkSync(imageUrl);

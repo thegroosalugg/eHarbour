@@ -1,4 +1,5 @@
 const Listing = require('../models/listing');
+const { formatListing } = require('../util/formatListing')
 
 // '/listings'
 exports.getListings = (req, res, next) => {
@@ -9,12 +10,8 @@ exports.getListings = (req, res, next) => {
   }
 
   query.then((listings) => {
-    const transformedListings = listings.map(listing => ({
-      ...listing._doc,
-      username: listing.userId?.username,
-      userId: listing.userId?._id || listing.userId,
-    }));
-    res.status(200).json(transformedListings);
+    const formattedListings = listings.map(listing => formatListing(listing));
+    res.status(200).json(formattedListings);
   })
     .catch((err) => {
       res.status(500).json(err);
@@ -34,13 +31,7 @@ exports.getListingById = (req, res, next) => {
     if (!listing) {
       return res.status(404).json({ message: 'Listing not found' });
     }
-    const transformedListing = ({
-      ...listing._doc,
-      username: listing.userId?.username,
-      userId: listing.userId?._id || listing.userId,
-      isLoggedIn: req.user?._id,
-    });
-    res.status(200).json(transformedListing);
+    res.status(200).json({ ...formatListing(listing), isLoggedIn: req.user?._id });
   })
     .catch((err) => {
       res.status(500).json({ ...err, message: 'getListingById Error' });
