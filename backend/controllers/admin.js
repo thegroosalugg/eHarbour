@@ -1,6 +1,7 @@
 const     mongoose = require('mongoose');
 const           fs = require('fs');
 const   fileHelper = require('../util/file');
+const         User = require('../models/user');
 const      Listing = require('../models/listing');
 const { trimBody } = require('../util/trimBody');
 
@@ -32,12 +33,23 @@ exports.postAddListing = (req, res, next) => {
 
 // '/user-listings'
 exports.getUserListings = (req, res, next) => {
-  Listing.find({ userId: req.user._id })
-    .then((listings) => {
-      res.status(200).json({ listings, ...req.user });
+  User.findById(req.user._id)
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      Listing.find({ userId: req.user._id })
+        .then((listings) => {
+          const { _id, username, email } = user;
+          res.status(200).json({ listings, _id, username, email });
+        })
+        .catch((err) => {
+          res.status(500).json({ ...err, message: 'user-listings: Listind.find failed' });
+        });
     })
     .catch((err) => {
-      res.status(500).json({ ...err, message: 'user-listings fetch error' });
+      res.status(500).json({ ...err, message: 'user-listings: User.findById failed' });
     });
 };
 

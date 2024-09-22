@@ -3,7 +3,8 @@ const     bcrypt = require('bcrypt');
 const        jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
-const User = require('../models/user');
+const    User = require('../models/user');
+const Listing = require('../models/listing');
 
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body;
@@ -23,13 +24,16 @@ exports.postLogin = (req, res, next) => {
           return res.status(401).json({ password: 'invalid' });
         }
 
-        const token = jwt.sign(
-          { _id, email, username },
-          process.env.JWT_SECRET,
-          { expiresIn: '30d' }
-        );
+        Listing.find({ userId: _id })
+          .then((listings) => {
+            const token = jwt.sign(
+              { _id, email, username, listings },
+              process.env.JWT_SECRET,
+              { expiresIn: '30d' }
+            );
 
-        res.status(200).json({ _id, email, username, listings: [], token });
+            res.status(200).json({ _id, email, username, listings, token });
+          })
       });
     })
     .catch((err) => {
@@ -49,7 +53,7 @@ exports.postSignup = (req, res, next) => {
     .then((user) => {
       const { _id, username, email } = user;
       const token = jwt.sign(
-        { _id, email, username },
+        { _id, email, username, listings: [] },
         process.env.JWT_SECRET,
         { expiresIn: '30d' }
       );

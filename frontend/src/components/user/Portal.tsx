@@ -38,7 +38,7 @@ export default function Portal({
 
   const userInfoProps = { isLoading, user, onLogout, setError, adsOnline: listings.length };
   const itemFormProps = { error, isLoading: sendingData, dataFn: submitHandler };
-  const listingsProps = { hasItems, listings };
+  const listingsProps = { hasItems, listings, onUserPage: true };
 
   return (
     <LayoutGroup>
@@ -50,7 +50,7 @@ export default function Portal({
       >
         <UserInfo  {...userInfoProps} />
         <ItemForm  {...itemFormProps} />
-        <Listings  {...listingsProps} onUserPage />
+        <Listings  {...listingsProps} />
       </motion.div>
     </LayoutGroup>
   );
