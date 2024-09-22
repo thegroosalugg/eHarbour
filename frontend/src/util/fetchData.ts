@@ -22,7 +22,7 @@ export const fetchData = async ({ url, method, data, token }: Fetch) => {
   const resData = await response.json();
 
   if (!response.ok) {
-    throw resData;
+    throw { ...resData, status: response.status };
   }
 
   return resData;
