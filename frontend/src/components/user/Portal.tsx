@@ -26,8 +26,7 @@ export default function Portal({
   const hasItems = listings.length > 0;
 
   const submitHandler = async (data: object) => {
-    const token = localStorage.getItem('token');
-    const newItem = await sendRequest({ url: 'add-listing', method: 'POST', data, token });
+    const newItem = await sendRequest({ url: 'add-listing', method: 'POST', data });
     if (newItem) {
       setExpanded(false);
       setTimeout(() => {

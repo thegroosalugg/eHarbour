@@ -24,18 +24,25 @@ exports.getListings = (req, res, next) => {
 // '/listing/:listingId'
 exports.getListingById = (req, res, next) => {
   const id = req.params.listingId;
+  let query = Listing.findById(id);
 
-  Listing.findById(id)
-    .populate('userId', 'username')
-    .then((listing) => {
-      if (!listing) {
-        return res.status(404).json({ message: 'Listing not found' });
-      }
+  if (req.user) {
+    query = query.populate('userId', 'username');
+  }
 
-      res.status(200).json(listing);
-    })
+  query.then((listing) => {
+    if (!listing) {
+      return res.status(404).json({ message: 'Listing not found' });
+    }
+    const transformedListing = ({
+      ...listing._doc,
+      username: listing.userId?.username,
+      userId: listing.userId?._id || listing.userId,
+      isLoggedIn: req.user?._id,
+    });
+    res.status(200).json(transformedListing);
+  })
     .catch((err) => {
-      console.error(err);
       res.status(500).json({ ...err, message: 'getListingById Error' });
     });
 };

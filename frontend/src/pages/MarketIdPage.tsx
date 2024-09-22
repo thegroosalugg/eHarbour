@@ -11,7 +11,6 @@ export default function MarketIdPage() {
   const { listingId } = useParams();
   const { data: listing, setData, sendRequest, isLoading, error, setError } = useHTTP();
   const { isLoading: isFetching } = useFetch('listing/' + listingId, setData);
-  const { data: user } = useFetch('login');
   const { setExpanded } = useContext(Context);
   const { navTo, isAnimating, setIsAnimating } = useContext(Context);
 
@@ -49,7 +48,6 @@ export default function MarketIdPage() {
     <LoadingIndicator />
   ) : listing ? (
     <ListingIdPage
-            user={user}
          listing={listing}
           onEdit={updateItem}
         onDelete={deleteItem}

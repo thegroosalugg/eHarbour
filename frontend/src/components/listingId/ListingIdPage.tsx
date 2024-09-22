@@ -7,7 +7,6 @@ import ItemForm from '../form/ItemForm';
 import Article from './Article';
 import DeletePrompt from './DeletePrompt';
 import Listing from '@/models/Listing';
-import User from '@/models/User';
 import css from './ListingIdPage.module.css';
 
 export const Box = forwardRef(
@@ -32,7 +31,6 @@ const GitLink = ({ link, name }: { link: string; name: string }) => (
 );
 
 export default function ListingIdPage({
-  user,
   listing,
   onEdit,
   onDelete,
@@ -40,7 +38,6 @@ export default function ListingIdPage({
   error,
   toggleForm,
 }: {
-        user: User | null;
      listing: Listing;
       onEdit: (data: object) => void;
     onDelete: () => void;
@@ -48,21 +45,21 @@ export default function ListingIdPage({
        error: object | null;
   toggleForm: (ref: React.RefObject<HTMLElement>) => void;
 }) {
-  const { _id, title, price, imageUrl, userId } = listing;
-  const myAd = user?._id === userId._id;
+  const { _id, title, price, imageUrl, userId, username, isLoggedIn } = listing;
+  const myAd = isLoggedIn === userId;
   const { expanded, navTo } = useContext(Context);
   const {   sendRequest   } = useHTTP();
   const    scrollDownRef    = useRef(null);
   const     scrollUpRef     = useRef(null);
 
   async function clickHandler() {
-    if (!user) {
+    if (!isLoggedIn) {
       navTo('/account');
     } else if (myAd) {
       toggleForm(expanded ? scrollUpRef : scrollDownRef);
     } else {
       const chat = await sendRequest({
-           url: `chat/${userId._id}/${_id}`,
+           url: `chat/${userId}/${_id}`,
         method: 'GET',
       });
       if (chat) {
@@ -73,8 +70,8 @@ export default function ListingIdPage({
           method: 'POST',
             data: {
              seller: {
-                    _id: userId._id,
-               username: userId.username,
+                    _id: userId,
+               username,
                 listing: { _id, title, price, imageUrl },
             },
           },
@@ -99,7 +96,7 @@ export default function ListingIdPage({
                 <span>Ad ID</span>
                 <span>{_id}</span>
               </p>
-              {user &&                    <p>{myAd ? 'Manage your Ad' : 'Posted by ' + userId.username}</p>}
+              {isLoggedIn &&              <p>{myAd ? 'Manage your Ad' : 'Posted by ' + username}</p>}
               <button onClick={clickHandler}>{myAd ?   'Edit Listing' : 'Send Message'}</button>
               {myAd && <DeletePrompt onDelete={onDelete} />}
             </Box>

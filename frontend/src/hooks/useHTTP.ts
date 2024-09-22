@@ -8,7 +8,8 @@ export function useHTTP<T = null>(initialData = null) {
   const [    error,     setError] = useState<object | null>(null);
   const {               setToken} = useContext(Context);
 
-  const sendRequest = useCallback(async ({ url, method, data, token }: Fetch) => {
+  const sendRequest = useCallback(async ({ url, method, data }: Fetch) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     setError(null);
     try {
