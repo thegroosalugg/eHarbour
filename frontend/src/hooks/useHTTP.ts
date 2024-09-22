@@ -29,7 +29,9 @@ export function useHTTP<T = null>(initialData = null) {
       return response;
     } catch (err) {
       if ((err as Error).status === 403) {
-        navigate('/account');
+        localStorage.removeItem('token');
+        setToken(null);
+        url !== 'user-listings' && navigate('/account')
       }
       setIsLoading(false);
       setError(err as object);

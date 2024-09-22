@@ -93,9 +93,10 @@ const authenticateJWT = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.sendStatus(403);
+        console.log('Token expired', req.user)
+      } else {
+        req.user = user;
       }
-      req.user = user;
     });
   }
   next();
