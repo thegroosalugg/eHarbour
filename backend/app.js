@@ -1,10 +1,10 @@
-                     require('dotenv').config();
-const      express = require('express');
-const     mongoose = require('mongoose');
-const          jwt = require('jsonwebtoken');
-const       socket = require('socket.io');
-const       multer = require('multer');
-const         cors = require('cors');
+                      require('dotenv').config();
+const       express = require('express');
+const      mongoose = require('mongoose');
+const           jwt = require('jsonwebtoken');
+const        socket = require('socket.io');
+const        multer = require('multer');
+const          cors = require('cors');
 
 const          User = require('./models/user');
 const    authRoutes = require('./routes/auth');

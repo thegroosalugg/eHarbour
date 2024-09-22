@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { Context } from '@/store/Context';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import ListingIdPage from '@/components/details/ListingIdPage';
+import ListingIdPage from '@/components/listingId/ListingIdPage';
 import ErrorPage from '@/components/error/Error';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 

@@ -4,14 +4,8 @@ import { Context } from '@/store/Context';
 import Listing from '@/models/Listing';
 import css from './Listing.module.css';
 
-export default function ListingItem({
-  listing,
-  isLoggedIn,
-}: {
-      listing: Listing;
-  isLoggedIn?: boolean | null;
-}) {
-  const { _id, title, price, description, imageUrl, userId } = listing;
+export default function ListingItem({ listing }: { listing: Listing; }) {
+  const { _id, title, price, description, imageUrl, username } = listing;
   const { navTo, isAnimating, setMetadata } = useContext(Context);
 
   function clickHandler() {
@@ -33,7 +27,7 @@ export default function ListingItem({
          onClick={clickHandler}
     >
       <img src={import.meta.env.VITE_SERVER_URL + imageUrl} alt={title} />
-      {isLoggedIn && <p className={css['username']}>Posted by {userId.username}</p>}
+      {username && <p className={css['username']}>Posted by {username}</p>}
       <div className={css['details']}>
         <p>
           ${price.toFixed(2)} ○ {title}

@@ -1,12 +1,21 @@
 const Listing = require('../models/listing');
 
-// '/listings
+// '/listings'
 exports.getListings = (req, res, next) => {
-  Listing.find()
-    .populate('userId', 'username')
-    .then((listings) => {
-      res.status(200).json(listings);
-    })
+  let query = Listing.find();
+
+  if (req.user) {
+    query = query.populate('userId', 'username');
+  }
+
+  query.then((listings) => {
+    const transformedListings = listings.map(listing => ({
+      ...listing._doc,
+      username: listing.userId?.username,
+      userId: listing.userId?._id || listing.userId,
+    }));
+    res.status(200).json(transformedListings);
+  })
     .catch((err) => {
       res.status(500).json(err);
     });

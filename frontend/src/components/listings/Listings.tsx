@@ -9,13 +9,11 @@ import css from './Listings.module.css';
 
 export default function Listings({
   listings,
-  isLoggedIn,
   hasItems,
   onUserPage,
   isLoading,
 }: {
      listings: Listing[];
-  isLoggedIn?: boolean | null;
     hasItems?: boolean | null;
   onUserPage?: boolean | null;
    isLoading?: boolean;
@@ -80,7 +78,7 @@ export default function Listings({
               <AnimatePresence>
                 {filteredListings.length > 0 ? (
                   filteredListings.map((listing) => (
-                    <ListingItem key={listing._id} listing={listing} isLoggedIn={isLoggedIn} />
+                    <ListingItem key={listing._id} listing={listing} />
                   ))
                 ) : (
                   <Fallback key='noSearches' />
