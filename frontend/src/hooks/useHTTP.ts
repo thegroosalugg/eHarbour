@@ -1,4 +1,4 @@
-import { useCallback, useState, useContext } from 'react';
+import { useCallback, useState, useContext, useRef } from 'react';
 import { Fetch, fetchData } from '../util/fetchData';
 import { Context } from '@/store/Context';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +11,9 @@ export function useHTTP<T = null>(initialData = null) {
   const [     data,      setData] = useState<T      | null>(initialData);
   const [    error,     setError] = useState<object | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const {               setToken} = useContext(Context);
-  const navigate = useNavigate();
+  const {    token,     setToken} = useContext(Context);
+  const navigate    = useNavigate();
+  const navigateRef = useRef(navigate); // used to remove unstable navigate as useCallBack dependency
 
   const sendRequest = useCallback(async ({ url, method, data }: Fetch) => {
     const token = localStorage.getItem('token');
@@ -31,12 +32,12 @@ export function useHTTP<T = null>(initialData = null) {
       if ((err as Error).status === 403) {
         localStorage.removeItem('token');
         setToken(null);
-        url !== 'user-listings' && navigate('/account')
+        method !== 'GET' && navigateRef.current('/account');
       }
       setIsLoading(false);
       setError(err as object);
     }
-  }, [setToken, navigate]);
+  }, [setToken]);
 
-  return { data, setData, setToken, isLoading, error, setError, sendRequest };
+  return { data, setData, token, setToken, isLoading, error, setError, sendRequest };
 }
