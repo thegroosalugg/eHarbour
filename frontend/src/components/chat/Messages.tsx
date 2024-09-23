@@ -40,7 +40,7 @@ export default function Messages({ chat }: { chat: Chat }) {
 
   useEffect(() => {
     const checkForMsgs = async () => {
-      const response = await sendRequest({ url: 'message/' + _id, method: 'GET' });
+      const response = await sendRequest({ url: 'messages/' + _id, method: 'GET' });
       if (response) {
         const newMsgs = returnNewMessages(messages || [], response);
         if (newMsgs.length > 0) {

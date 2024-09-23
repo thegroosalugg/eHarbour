@@ -95,6 +95,7 @@ const authenticateJWT = (req, res, next) => {
       if (err) {
         console.log('Token expired', req.user)
       } else {
+        user._id = new mongoose.Types.ObjectId(String(user._id)); // convert back to object ID
         req.user = user;
       }
     });
