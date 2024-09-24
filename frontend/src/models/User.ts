@@ -9,5 +9,6 @@ export default class User {
     this._id      = '';
     this.email    = '';
     this.username = '';
+    this.listings = [];
   }
 }
