@@ -1,5 +1,4 @@
-import { Context } from '@/store/Context';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 import {  useHTTP } from '@/hooks/useHTTP';
 import       User   from '@/models/User';
@@ -20,7 +19,7 @@ export default function Portal({
     setData: Dispatch<SetStateAction<User>>;
 }) {
   const { sendRequest, isLoading: sendingData, error, setError } = useHTTP();
-  const { setExpanded } = useContext(Context);
+  const [expanded, setExpanded] = useState(false);
 
   const { listings } = user;
   const hasItems = listings.length > 0;
@@ -35,8 +34,8 @@ export default function Portal({
     }
   };
 
-  const userInfoProps = { isLoading, user, onLogout, setError, adsOnline: listings.length };
-  const itemFormProps = { error, isLoading: sendingData, dataFn: submitHandler };
+  const userInfoProps = { expanded, setExpanded, isLoading, user, onLogout, setError, adsOnline: listings.length };
+  const itemFormProps = { expanded, error, isLoading: sendingData, dataFn: submitHandler };
   const listingsProps = { hasItems, listings, onUserPage: true };
 
   return (

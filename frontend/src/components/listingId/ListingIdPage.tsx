@@ -36,6 +36,7 @@ export default function ListingIdPage({
   onDelete,
   isLoading,
   error,
+  expanded,
   toggleForm,
 }: {
      listing: Listing;
@@ -43,14 +44,15 @@ export default function ListingIdPage({
     onDelete: () => void;
    isLoading: boolean;
        error: object | null;
+    expanded: boolean;
   toggleForm: (ref: React.RefObject<HTMLElement>) => void;
 }) {
   const { _id, title, price, imageUrl, userId, username, isLoggedIn } = listing;
   const myAd = isLoggedIn === userId;
-  const { expanded, navTo } = useContext(Context);
-  const {   sendRequest   } = useHTTP();
-  const    scrollDownRef    = useRef(null);
-  const     scrollUpRef     = useRef(null);
+  const {    navTo    } = useContext(Context);
+  const { sendRequest } = useHTTP();
+  const   scrollDownRef = useRef(null);
+  const    scrollUpRef  = useRef(null);
 
   async function clickHandler() {
     if (!isLoggedIn) {
@@ -101,6 +103,7 @@ export default function ListingIdPage({
               {myAd && <DeletePrompt onDelete={onDelete} />}
             </Box>
             <ItemForm
+               expanded={expanded}
                  dataFn={onEdit}
               isLoading={isLoading}
                   error={error}

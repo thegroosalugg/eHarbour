@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Context } from '@/store/Context';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
@@ -11,7 +11,7 @@ export default function MarketIdPage() {
   const { listingId } = useParams();
   const { data: listing, setData, sendRequest, isLoading, error, setError } = useHTTP();
   const { isLoading: isFetching } = useFetch('listing/' + listingId, setData);
-  const { setExpanded } = useContext(Context);
+  const [ expanded, setExpanded ] = useState(false);
   const { navTo, isAnimating, setIsAnimating } = useContext(Context);
 
   const updateItem = async (data: object) => {
@@ -53,6 +53,7 @@ export default function MarketIdPage() {
         onDelete={deleteItem}
        isLoading={isLoading}
            error={error}
+        expanded={expanded}
       toggleForm={toggleForm}
     />
   ) : (
