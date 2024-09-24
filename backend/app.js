@@ -1,7 +1,6 @@
                       require('dotenv').config();
 const       express = require('express');
 const      mongoose = require('mongoose');
-const           jwt = require('jsonwebtoken');
 const        socket = require('socket.io');
 const        multer = require('multer');
 const          cors = require('cors');
@@ -12,6 +11,9 @@ const   adminRoutes = require('./routes/admin');
 const  marketRoutes = require('./routes/market');
 const    chatRoutes = require('./routes/chat');
 const messageRoutes = require('./routes/message');
+
+const authenticateJWT = require('./middleware/authenticateJWT');
+const      isLoggedIn = require('./middleware/isLoggedIn');
 
 const    app = express();
 const   http = require('http');
@@ -87,27 +89,11 @@ app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
 
-const authenticateJWT = (req, res, next) => {
-  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
-
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) {
-        console.log('Token expired', req.user)
-      } else {
-        user._id = new mongoose.Types.ObjectId(String(user._id)); // convert back to object ID
-        req.user = user;
-      }
-    });
-  }
-  next();
-};
-
 app.use(authRoutes);
-app.use(authenticateJWT,   adminRoutes);
-app.use(authenticateJWT,  marketRoutes);
-app.use(authenticateJWT,    chatRoutes);
-app.use(authenticateJWT, messageRoutes);
+app.use(authenticateJWT, marketRoutes);
+app.use(authenticateJWT, isLoggedIn, adminRoutes);
+app.use(authenticateJWT, isLoggedIn, chatRoutes);
+app.use(authenticateJWT, isLoggedIn, messageRoutes);
 
 mongoose
   .connect(process.env.MONGO_KEY)

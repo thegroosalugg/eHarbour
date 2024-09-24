@@ -1,6 +1,5 @@
-const   mongoose = require('mongoose');
-const       Chat = require('../models/chat');
-const toObjectId = (id) => new mongoose.Types.ObjectId(String(id));
+const       Chat     = require('../models/chat');
+const { toObjectId } = require('../util/toObjectId');
 
 // chat
 exports.postChat = (req, res, next) => {
