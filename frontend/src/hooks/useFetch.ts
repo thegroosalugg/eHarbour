@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Context } from '@/store/Context';
 
 export const useFetch = <T = null>(
-            params: string,
+               url: string,
   setExternalData?: Dispatch<SetStateAction<T>>
 ) => {
   const { data, setData, isLoading, error, setError, sendRequest } = useHTTP<T>();
@@ -12,13 +12,13 @@ export const useFetch = <T = null>(
   const {  listingId  } = useParams();
 
   const getData = useCallback(async () => {
-    const response = await sendRequest({ params, method: 'GET' });
+    const response = await sendRequest({ url, method: 'GET' });
     setExternalData && setExternalData(response); // allows to update another state with this data
     if (listingId && response?.title && response?.description) {
         const { title, description } = response;
         setMetadata({ title, description }); // update dynamic listing path metadata
     }
-  }, [params, listingId, sendRequest, setExternalData, setMetadata]);
+  }, [url, listingId, sendRequest, setExternalData, setMetadata]);
 
   useEffect(() => {
     getData();

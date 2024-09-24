@@ -4,7 +4,9 @@ export default class Listing {
         price: number;
         title: string;
           _id: string;
-       userId: { _id: string; username: string };
+       userId: string;
+    username?: string | undefined;
+  isLoggedIn?: string | undefined;
 
   constructor() {
     this.description = '';
@@ -12,6 +14,6 @@ export default class Listing {
     this.price       =  0;
     this.title       = '';
     this._id         = '';
-    this.userId      = { _id: '', username: '' };
+    this.userId      = '';
   }
 }

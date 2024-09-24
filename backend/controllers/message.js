@@ -1,17 +1,12 @@
 const mongoose = require('mongoose');
-const Message = require('../models/message');
+const  Message = require('../models/message');
 
 exports.postMessage = (req, res, next) => {
   const { text, chatId } = req.body;
-  const userId = req.session.user?._id;
+  const userId = req.user._id;
 
-  const errors = {};
-  if (!text.trim()) errors.text   = 'Message empty';
-  if (!chatId)      errors.chatId = 'Cannot find chat';
-  if (!userId)      errors.userId = 'No user logged in';
-
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ ...errors });
+  if (!text.trim()) {
+    return res.status(400).json({ message: 'Message empty' });
   }
 
   const newMessage = new Message({ text, userId, chatId });

@@ -15,13 +15,13 @@ export default function UserInfo({
   setExpanded,
   setError,
 }: {
-         user: User;
-     onLogout: () => void;
-    isLoading: boolean;
-    adsOnline: number;
-     expanded: boolean;
-  setExpanded: Dispatch<SetStateAction<boolean>>;
-     setError: Dispatch<SetStateAction<null>>;
+          user: User;
+      onLogout: () => void;
+     isLoading: boolean;
+     adsOnline: number;
+      expanded: boolean;
+   setExpanded: Dispatch<SetStateAction<boolean>>;
+      setError: Dispatch<SetStateAction<null>>;
 }) {
   const { username, email } = user;
   const { navTo, isAnimating, setIsAnimating } = useContext(Context);

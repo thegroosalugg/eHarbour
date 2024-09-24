@@ -14,7 +14,7 @@ export default function Messages({ chat }: { chat: Chat }) {
   const { _id, sessionId } = chat;
   const {              navTo                 } = useContext(Context);
   const {           sendRequest              } = useHTTP();
-  const { data: messages, isLoading, setData } = useFetch<Message[]>('message/' + _id);
+  const { data: messages, isLoading, setData } = useFetch<Message[]>('messages/' + _id);
   const [value,     setValue] = useState('');
   const [didSend, setDidSend] = useState(false);
   const  msgRef               = useRef<HTMLLIElement>(null);
@@ -24,7 +24,7 @@ export default function Messages({ chat }: { chat: Chat }) {
     // prettier-ignore
     if (value.trim()) {
       const message = await sendRequest({
-        params: 'message',
+           url: 'message',
         method: 'POST',
           data: { chatId: _id, text: value },
       });
@@ -40,7 +40,7 @@ export default function Messages({ chat }: { chat: Chat }) {
 
   useEffect(() => {
     const checkForMsgs = async () => {
-      const response = await sendRequest({ params: 'message/' + _id, method: 'GET' });
+      const response = await sendRequest({ url: 'messages/' + _id, method: 'GET' });
       if (response) {
         const newMsgs = returnNewMessages(messages || [], response);
         if (newMsgs.length > 0) {

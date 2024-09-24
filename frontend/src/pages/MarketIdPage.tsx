@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import { Context } from '@/store/Context';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import ListingIdPage from '@/components/details/ListingIdPage';
+import ListingIdPage from '@/components/listingId/ListingIdPage';
 import ErrorPage from '@/components/error/Error';
 import LoadingIndicator from '@/components/loading/LoadingIndicator';
 
@@ -11,13 +11,12 @@ export default function MarketIdPage() {
   const { listingId } = useParams();
   const { data: listing, setData, sendRequest, isLoading, error, setError } = useHTTP();
   const { isLoading: isFetching } = useFetch('listing/' + listingId, setData);
-  const { data: user } = useFetch('login');
-  const [expanded, setExpanded] = useState(false);
+  const [ expanded, setExpanded ] = useState(false);
   const { navTo, isAnimating, setIsAnimating } = useContext(Context);
 
   const updateItem = async (data: object) => {
     setIsAnimating(true)
-    const didUpdate = await sendRequest({ params: 'edit-listing/' + listingId, method: 'PUT', data });
+    const didUpdate = await sendRequest({ url: 'edit-listing/' + listingId, method: 'PUT', data });
     didUpdate && setExpanded(false);
     setTimeout(() => {
       setIsAnimating(false);
@@ -25,7 +24,7 @@ export default function MarketIdPage() {
   };
 
   const deleteItem = async () => {
-    const hasError = await sendRequest({ params: 'delete-listing/' + listingId, method: 'DELETE' });
+    const hasError = await sendRequest({ url: 'delete-listing/' + listingId, method: 'DELETE' });
     if (!hasError) {
       navTo('/account');
     }
@@ -49,7 +48,6 @@ export default function MarketIdPage() {
     <LoadingIndicator />
   ) : listing ? (
     <ListingIdPage
-            user={user}
          listing={listing}
           onEdit={updateItem}
         onDelete={deleteItem}

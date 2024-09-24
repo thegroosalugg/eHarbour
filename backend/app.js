@@ -1,20 +1,20 @@
-const      express = require('express');
-const     mongoose = require('mongoose');
-const      session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const       socket = require('socket.io');
-const       multer = require('multer');
-const         cors = require('cors');
-require('dotenv').config();
+                      require('dotenv').config();
+const       express = require('express');
+const      mongoose = require('mongoose');
+const        socket = require('socket.io');
+const        multer = require('multer');
+const          cors = require('cors');
 
 const          User = require('./models/user');
-const  marketRoutes = require('./routes/market');
-const   adminRoutes = require('./routes/admin');
 const    authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/message');
+const   adminRoutes = require('./routes/admin');
+const  marketRoutes = require('./routes/market');
 const    chatRoutes = require('./routes/chat');
+const messageRoutes = require('./routes/message');
 
-const MONGODB_URI = process.env.MONGO_KEY;
+const authenticateJWT = require('./middleware/authenticateJWT');
+const      isLoggedIn = require('./middleware/isLoggedIn');
+
 const    app = express();
 const   http = require('http');
 const server = http.createServer(app);
@@ -56,11 +56,6 @@ io.on('connection', (socket) => {
   });
 });
 
-const store = new MongoDBStore({
-         uri: MONGODB_URI,
-  collection: 'sessions',
-});
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images');
@@ -93,47 +88,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(multer({ storage: storage, fileFilter: fileFilter }).single('image'));
 app.use(express.static('public'));
 app.use('/images', express.static('images'));
-app.set('trust proxy', 1); // trust first proxy. Required to work on Render.com
-app.use(
-  session({
-               secret: 'my secret',
-               resave: false,
-    saveUninitialized: false,
-                store: store,
-               cookie: {
-                   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days Prevents browser logouts when closed
-                 httpOnly: true,   // disable httpOnly, secure & sameSite for localHost testing
-                   secure: true,   // set to true for production
-                 sameSite: 'None', // required for cross-origin requests
-              },
-  })
-);
 
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    return next();
-  }
-  User.findById(req.session.user._id)
-    .then((user) => {
-      if (!user) {
-        return next();
-      }
-      req.user = user;
-      next();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.use(marketRoutes);
-app.use(adminRoutes);
 app.use(authRoutes);
-app.use(messageRoutes);
-app.use(chatRoutes);
+app.use(authenticateJWT, marketRoutes);
+app.use(authenticateJWT, isLoggedIn, adminRoutes);
+app.use(authenticateJWT, isLoggedIn, chatRoutes);
+app.use(authenticateJWT, isLoggedIn, messageRoutes);
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(process.env.MONGO_KEY)
   .then(() => {
     server.listen(3000, () => {
       console.log('Server is running on port 3000');

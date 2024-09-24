@@ -1,16 +1,20 @@
 export interface Fetch {
-  params: string;
+     url: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
    data?: object;
+  token?: string | null;
 }
 
-export const fetchData = async ({ params, method, data }: Fetch) => {
+export const fetchData = async ({ url, method, data, token }: Fetch) => {
   const isFormData = data instanceof FormData;
   const body = data ? (isFormData ? data : JSON.stringify(data)) : null;
+  const headers: HeadersInit = {};
+  if (!isFormData) headers['Content-Type']  = 'application/json';
+  if (token)       headers['Authorization'] = `Bearer ${token}`;
 
-  const response = await fetch(import.meta.env.VITE_SERVER_URL + params, {
+  const response = await fetch(import.meta.env.VITE_SERVER_URL + url, {
     method,
-    headers: isFormData ? undefined : { 'Content-Type': 'application/json' },
+    headers,
     credentials: 'include', // send cookies to backend
     body,
   });
@@ -18,7 +22,7 @@ export const fetchData = async ({ params, method, data }: Fetch) => {
   const resData = await response.json();
 
   if (!response.ok) {
-    throw resData;
+    throw { ...resData, status: response.status };
   }
 
   return resData;
