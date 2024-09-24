@@ -10,7 +10,7 @@ export default class Chat {
     this._id       = '';
     this.sessionId = '';
     this.members   = [
-      { _id: '', username: '', email: '' },
+      { _id: '', username: '', email: '', listings: [] },
       { _id: '', username: '', listing: { _id: '', title: '', price: 0, imageUrl: '' } },
     ];
   }
