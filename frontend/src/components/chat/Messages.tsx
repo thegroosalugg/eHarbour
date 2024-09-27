@@ -3,15 +3,15 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { useFetch } from '@/hooks/useFetch';
 import { useHTTP } from '@/hooks/useHTTP';
-import Chat from '@/models/Chat';
-import LoadingIndicator from '../loading/LoadingIndicator';
+import { compareArrays } from '@/util/compareArrays';
 import Message from '@/models/Message';
 import MessageItem from './Message';
-import { returnNewMessages } from '@/util/returnNewMessages';
+import LoadingIndicator from '../loading/LoadingIndicator';
+import Chat from '@/models/Chat';
 import css from './Messages.module.css';
 
 export default function Messages({ chat }: { chat: Chat }) {
-  const { _id, sessionId } = chat;
+  const {          _id, sessionId            } = chat;
   const {              navTo                 } = useContext(Context);
   const {           sendRequest              } = useHTTP();
   const { data: messages, isLoading, setData } = useFetch<Message[]>('messages/' + _id);
@@ -21,7 +21,6 @@ export default function Messages({ chat }: { chat: Chat }) {
 
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // prettier-ignore
     if (value.trim()) {
       const message = await sendRequest({
            url: 'message',
@@ -42,7 +41,7 @@ export default function Messages({ chat }: { chat: Chat }) {
     const checkForMsgs = async () => {
       const response = await sendRequest({ url: 'messages/' + _id, method: 'GET' });
       if (response) {
-        const newMsgs = returnNewMessages(messages || [], response);
+        const newMsgs = compareArrays(messages || [], response);
         if (newMsgs.length > 0) {
           setData((prevData) => (prevData ? [...prevData, ...newMsgs] : [...newMsgs]))
         }
