@@ -1,19 +1,29 @@
-import { Context } from '@/store/Context';
+import { useHTTP } from '@/hooks/useHTTP';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useContext } from 'react';
+import { Context } from '@/store/Context';
+import { useEffect, useState, useContext, Dispatch, SetStateAction } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { destructureChat } from '@/util/destructureChat';
+import { compareArrays } from '@/util/compareArrays';
 import Chat from '@/models/Chat';
 import ChatItem from './Chat';
 import Fallback from './Fallback';
 import ErrorPage from '../error/Error';
 import css from './Chats.module.css';
 
-export default function Chats({ chats }: { chats: Chat[] }) {
+export default function Chats({
+  chats,
+  setChats,
+}: {
+  chats: Chat[];
+  setChats: Dispatch<SetStateAction<Chat[] | null>>;
+}) {
   const [isActive, setIsActive] = useState<Chat[] | null>(null);
   const [   error,    setError] = useState(false);
   const {       chatId        } = useParams();
+  const {     sendRequest     } = useHTTP<Chat[]>();
   const {     setMetadata     } = useContext(Context);
+
 
   useEffect(() => {
     if (chatId) {
@@ -27,7 +37,25 @@ export default function Chats({ chats }: { chats: Chat[] }) {
         setError(true);
       }
     }
-  }, [chats, chatId, setMetadata]);
+
+    const checkForNewChats = async () => {
+      const response = await sendRequest({ url: 'chats', method: 'GET' });
+      if (response) {
+        const newChats = compareArrays(chats || [], response);
+        if (newChats.length > 0) {
+          setChats((prevData) => (prevData ? [...newChats, ...prevData] : [...newChats]))
+        }
+      }
+    }
+
+    const interval = setInterval(() => {
+      checkForNewChats();
+    }, 6000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [chats, chatId, setChats, sendRequest, setMetadata]);
 
   if (error) {
     return <ErrorPage />;
