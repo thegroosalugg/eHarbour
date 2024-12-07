@@ -9,8 +9,7 @@ const authenticateJWT = (req, res, next) => {
       if (err) {
         console.log('Token expired', req.user)
       } else {
-        toObjectId
-        user._id =toObjectId(user._id); // convert back to object ID
+        user._id = toObjectId(user._id); // convert back to object ID
         req.user = user;
       }
     });
